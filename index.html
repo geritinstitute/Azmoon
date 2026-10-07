@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آزمون | کانون انتشارات گریت</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: Tahoma, sans-serif;
+    background: #0f0f1a;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.06), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(255,255,255,.04), transparent 50%);
+    z-index:-1;
+  }
+
+  .box {
+    background: #1a1a2e;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
+    padding: 60px 40px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    animation: fadeUp .8s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(30px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    font-weight: 800;
+  }
+
+  .info {
+    font-size: 1.2rem;
+    line-height: 2.5;
+    color: #a0a0b8;
+  }
+
+  .info b {
+    color: #fff;
+    font-size: 1.3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 35px;
+    padding: 12px 28px;
+    background: transparent;
+    color: #a0a0b8;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    font-size: .95rem;
+    transition: all .3s ease;
+  }
+
+  .back-link:hover {
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    border-color: rgba(255,255,255,.3);
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <span class="icon">📝</span>
+  <h1>آزمون</h1>
+  <div class="info">
+    📅 جمعه ۱۷ مهر ۱۴۰۵<br>
+    🕐 ساعت ۱۷
+  </div>
+
+  <a href="https://geritinstitute.github.io/Gerit-institute-/" class="back-link">
+    ← بازگشت به سایت اصلی
+  </a>
+</div>
+
+</body>
+</html>
