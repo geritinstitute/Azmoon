@@ -3,390 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>آزمون آمادگی دفاعی — کانون گریت</title>
+<title>نتایج آزمون — کانون گریت</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: Tahoma, 'Segoe UI', sans-serif;
-    background: #0f172a;
+    background: #0b1120;
     color: #e2e8f0;
     min-height: 100vh;
-    padding: 20px;
+    padding: 24px 16px;
     line-height: 1.9;
-    user-select: none;
-    -webkit-user-select: none;
   }
-  .container {
-    max-width: 720px;
-    margin: 0 auto;
-    background: #1e293b;
-    border-radius: 18px;
-    padding: 28px 24px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    border: 1px solid #334155;
-  }
-  h1 { font-size: 20px; text-align: center; color: #fbbf24; margin-bottom: 4px; }
-  .sub { text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 24px; }
+  .container { max-width: 620px; margin: 0 auto; }
 
-  #loginScreen { display: block; }
-  #examScreen { display: none; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px; }
-  .field input {
-    width: 100%; padding: 12px; border-radius: 10px;
-    border: 1px solid #475569; background: #0f172a; color: #fff;
-    font-size: 15px; outline: none; font-family: inherit;
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 22px; color: #fbbf24; margin-bottom: 6px; letter-spacing: .5px; }
+  .header p { font-size: 12px; color: #94a3b8; letter-spacing: .5px; }
+  .header .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+    margin: 14px auto 0; border-radius: 2px;
   }
-  .field input:focus { border-color: #fbbf24; }
-  .btn {
+
+  .card {
+    background: linear-gradient(160deg, #1e293b, #0f172a);
+    border-radius: 16px;
+    padding: 26px 22px;
+    margin-bottom: 26px;
+    border: 1px solid #2d3b4f;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+  }
+  .card-title {
+    font-size: 15px; color: #fbbf24; font-weight: bold;
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid #2d3b4f;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* سه نفر برتر */
+  .rank-list { display: flex; flex-direction: column; gap: 12px; }
+  .rank-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; border-radius: 12px;
+    background: #111c2e; border: 1px solid #2d3b4f;
+    transition: transform .15s;
+  }
+  .rank-row:hover { transform: translateX(-3px); }
+  .rank-row.first {
+    background: linear-gradient(145deg, #3a2a08, #1a1206);
+    border-color: #fbbf24;
+    box-shadow: 0 0 24px rgba(251,191,36,0.15);
+  }
+  .rank-row.second {
+    background: linear-gradient(145deg, #26323f, #131b26);
+    border-color: #94a3b8;
+  }
+  .rank-row.third {
+    background: linear-gradient(145deg, #2e1f10, #170f07);
+    border-color: #d97706;
+  }
+  .rank-medal { font-size: 26px; flex-shrink: 0; }
+  .rank-info { flex: 1; }
+  .rank-info .r-name { font-size: 15px; font-weight: bold; }
+  .rank-info .r-pos { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .rank-traz { text-align: left; flex-shrink: 0; }
+  .rank-traz .t-num { font-size: 20px; font-weight: bold; color: #fbbf24; }
+  .rank-traz .t-lbl { font-size: 10px; color: #94a3b8; display: block; text-align: center; }
+
+  /* بخش‌های ورودی */
+  .input-section input {
+    width: 100%; padding: 13px; border-radius: 10px;
+    border: 1px solid #475569; background: #0b1120; color: #fff;
+    font-size: 15px; outline: none; font-family: inherit; margin-bottom: 12px;
+  }
+  .input-section input:focus { border-color: #fbbf24; }
+  .btn-green {
     width: 100%; padding: 13px; border: none; border-radius: 10px;
-    background: linear-gradient(145deg, #fbbf24, #d97706);
-    color: #0f172a; font-weight: bold; font-size: 15px;
-    cursor: pointer; font-family: inherit; margin-top: 10px;
-    transition: transform .1s;
-  }
-  .btn:hover { transform: translateY(-1px); }
-  .btn:active { transform: translateY(1px); }
-  .msg { text-align: center; color: #f87171; font-size: 13px; min-height: 1.5em; margin-top: 10px; }
-
-  .exam-header {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 10px;
-    padding-bottom: 16px; margin-bottom: 20px;
-    border-bottom: 1px solid #334155;
-  }
-  .exam-header .info { font-size: 13px; color: #94a3b8; }
-  .exam-header .info b { color: #fbbf24; }
-  .timer {
-    background: #0f172a; padding: 8px 16px; border-radius: 10px;
-    font-family: 'Courier New', monospace; font-size: 18px;
-    font-weight: bold; color: #6ee7b7; border: 1px solid #334155;
-  }
-  .timer.warn { color: #f87171; border-color: #f87171; animation: pulse 1s infinite; }
-  @keyframes pulse { 50% { opacity: .5; } }
-
-  .question {
-    margin-bottom: 24px; padding-bottom: 20px;
-    border-bottom: 1px dashed #334155;
-  }
-  .question:last-of-type { border-bottom: none; }
-  .q-num { color: #fbbf24; font-weight: bold; font-size: 14px; margin-bottom: 6px; }
-  .q-text { font-size: 15px; margin-bottom: 12px; white-space: pre-line; }
-  .option {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 10px 12px; margin-bottom: 8px;
-    background: #0f172a; border: 1px solid #334155;
-    border-radius: 10px; cursor: pointer; transition: all .15s;
-    font-size: 14px;
-  }
-  .option:hover { border-color: #fbbf24; }
-  .option input { margin-top: 4px; accent-color: #fbbf24; cursor: pointer; }
-  .option.selected { background: #422006; border-color: #fbbf24; }
-
-  .submit-btn {
-    width: 100%; padding: 15px; border: none; border-radius: 12px;
     background: linear-gradient(145deg, #10b981, #059669);
-    color: #fff; font-weight: bold; font-size: 16px;
-    cursor: pointer; font-family: inherit; margin-top: 10px;
+    color: #fff; font-weight: bold; font-size: 15px;
+    cursor: pointer; font-family: inherit;
   }
-  .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+  .btn-green:hover { transform: translateY(-1px); }
+  .btn-purple {
+    width: 100%; padding: 13px; border: none; border-radius: 10px;
+    background: linear-gradient(145deg, #6366f1, #4f46e5);
+    color: #fff; font-weight: bold; font-size: 15px;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-purple:hover { transform: translateY(-1px); }
 
-  .success {
-    text-align: center; padding: 40px 20px;
+  .result-box {
+    margin-top: 16px; padding: 18px; border-radius: 14px;
+    text-align: center; display: none;
   }
-  .success .icon { font-size: 60px; margin-bottom: 16px; }
-  .success h2 { color: #6ee7b7; font-size: 22px; margin-bottom: 10px; }
-  .success p { color: #94a3b8; font-size: 14px; }
+  .result-box.show { display: block; }
+  .result-box.success {
+    background: linear-gradient(145deg, #422006, #1c1917);
+    border: 1px solid #fbbf24; color: #fbbf24;
+  }
+  .result-box.error {
+    background: #422006; border: 1px solid #f87171; color: #f87171;
+  }
+  .result-box .res-name { font-size: 15px; font-weight: bold; margin-bottom: 6px; }
+  .result-box .res-traz { font-size: 32px; font-weight: bold; margin: 8px 0; }
+  .result-box .res-label { font-size: 13px; opacity: .85; }
+
+  /* گریت AI */
+  .ai-intro { font-size: 13px; color: #cbd5e1; margin-bottom: 16px; line-height: 1.8; }
+  .ai-result {
+    margin-top: 16px; padding: 18px; border-radius: 14px;
+    font-size: 14px; line-height: 1.9; display: none;
+  }
+  .ai-result.show { display: block; }
+  .ai-result.excellent {
+    background: linear-gradient(145deg, #052e16, #0a1f12);
+    border: 1px solid #22c55e; color: #86efac;
+  }
+  .ai-result.good {
+    background: linear-gradient(145deg, #422006, #1c1917);
+    border: 1px solid #fbbf24; color: #fde68a;
+  }
+  .ai-result.weak {
+    background: linear-gradient(145deg, #3b0a0a, #1c0a0a);
+    border: 1px solid #f87171; color: #fca5a5;
+  }
+  .ai-result .ai-name { font-weight: bold; font-size: 15px; margin-bottom: 6px; }
+  .ai-result .ai-traz { font-size: 22px; font-weight: bold; margin: 4px 0 10px; }
+  .ai-result .ai-msg { font-size: 13px; }
 </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- ===== LOGIN ===== -->
-  <div id="loginScreen">
-    <h1>📝 آزمون آمادگی دفاعی</h1>
-    <p class="sub">کانون انتشارات گریت — صفحات ۱۹ تا ۴۴</p>
-    <div class="field">
-      <label>نام و نام خانوادگی</label>
-      <input id="inpName" placeholder="مثلاً: علی محمدی" autocomplete="off">
-    </div>
-    <div class="field">
-      <label>کلاس / مدرسه</label>
-      <input id="inpClass" placeholder="مثلاً: نهم الف — دبیرستان شهید بهشتی" autocomplete="off">
-    </div>
-    <button class="btn" id="startBtn">شروع آزمون</button>
-    <div class="msg" id="loginMsg"></div>
+  <div class="header">
+    <h1>نتایج آزمون آمادگی دفاعی</h1>
+    <p>کانون انتشارات گریت — صفحات ۱۹ تا ۴۴</p>
+    <div class="divider"></div>
   </div>
 
-  <!-- ===== EXAM ===== -->
-  <div id="examScreen">
-    <div class="exam-header">
-      <div class="info">
-        👤 <b id="hdrName"></b><br>
-        <span id="hdrClass"></span>
+  <!-- سه نفر برتر کشوری -->
+  <div class="card">
+    <div class="card-title">🏆 سه نفر برتر کشوری</div>
+    <div class="rank-list">
+      <div class="rank-row first">
+        <div class="rank-medal">🥇</div>
+        <div class="rank-info">
+          <div class="r-name">نیوشا جهانبخشی</div>
+          <div class="r-pos">رتبه اول کشوری</div>
+        </div>
+        <div class="rank-traz">
+          <div class="t-num">۱۲۰۲۱</div>
+          <span class="t-lbl">تراز</span>
+        </div>
       </div>
-      <div class="timer" id="timer">11:00</div>
+      <div class="rank-row second">
+        <div class="rank-medal">🥈</div>
+        <div class="rank-info">
+          <div class="r-name">آراد رضایی</div>
+          <div class="r-pos">رتبه دوم کشوری</div>
+        </div>
+        <div class="rank-traz">
+          <div class="t-num">۱۲۰۱۹</div>
+          <span class="t-lbl">تراز</span>
+        </div>
+      </div>
+      <div class="rank-row third">
+        <div class="rank-medal">🥉</div>
+        <div class="rank-info">
+          <div class="r-name">سارا مرتضوی</div>
+          <div class="r-pos">رتبه سوم کشوری</div>
+        </div>
+        <div class="rank-traz">
+          <div class="t-num">۱۱۹۳۴</div>
+          <span class="t-lbl">تراز</span>
+        </div>
+      </div>
     </div>
-    <div id="questionsBox"></div>
-    <button class="submit-btn" id="submitBtn">📤 ارسال پاسخ‌ها</button>
-    <div class="msg" id="examMsg"></div>
   </div>
 
-  <!-- ===== SUCCESS ===== -->
-  <div id="successScreen" class="success" style="display:none">
-    <div class="icon">✅</div>
-    <h2>پاسخ‌های شما ثبت شد</h2>
-    <p>آزمون به پایان رسید. نتیجه توسط دبیر اعلام می‌شود.</p>
+  <!-- تراز من -->
+  <div class="card input-section">
+    <div class="card-title">🔍 تراز من</div>
+    <input id="inpName" placeholder="نام و نام خانوادگی خود را وارد کنید" autocomplete="off">
+    <button class="btn-green" id="checkBtn">نمایش تراز</button>
+    <div class="result-box" id="resultBox"></div>
+  </div>
+
+  <!-- گریت AI -->
+  <div class="card input-section">
+    <div class="card-title">🤖 چت با گریت AI</div>
+    <p class="ai-intro">
+      تراز آزمون خود را وارد کنید تا گریت AI نمره احتمالی شما در امتحان مدرسه را پیش‌بینی کند.
+    </p>
+    <input id="inpTraz" type="number" placeholder="مثلاً: ۷۲۰۰" autocomplete="off">
+    <button class="btn-purple" id="aiBtn">پیش‌بینی نمره</button>
+    <div class="ai-result" id="aiResult"></div>
   </div>
 
 </div>
 
 <script>
 // ============================================================
-//  CONFIG
+//  تراز دانش‌آموزان (بدون ببقت)
 // ============================================================
-const NPOINT_URL = 'https://api.npoint.io/4e808f937112b7c22019';
-const EXAM_DURATION_MIN = 11; // دقیقه
-
-// ============================================================
-//  QUESTIONS (بدون پاسخنامه)
-// ============================================================
-const QUESTIONS = [
-  {
-    text: "چه کسی بنیان‌گذار اسلام محمدی است؟",
-    options: ["حضرت محمد", "حضرت آدم", "روح‌الله خمینی", "تحول اسلامی"]
-  },
-  {
-    text: "چند مورد از موارد زیر درست است؟\n• اقتصاد کانون زندگی انسان‌هاست\n• رسیدن به قله پیشرفت با علم و چند فاکتور دیگر ممکن است\n• پنجاه و هفتمین سالگرد انقلاب اسلامی ۲۲ بهمن ۱۴۱۷ است\n• توکل و اعتماد به خدا یکی از آموزه‌های دفاع مقدس است",
-    options: ["۱", "۲", "۳", "۴"]
-  },
-  {
-    text: "چند مورد از موارد زیر درست است؟\n• سبک دفاع مقدس بر اساس روش‌های اسلامی است\n• توکل به خدا هم می‌تواند جز ویژگی‌های افرادی که در عملیات والفجر ۸ وجود دارد باشد و همچنین می‌تواند جز ویژگی‌های کمال کورسل باشد\n• از دهه ۶۰ تاکنون جنگ بزرگی به نام جنگ نرم میان ایران و دشمنان آن راه افتاد",
-    options: ["۱", "۲", "۳", "۴"]
-  },
-  {
-    text: "با توجه به پایین‌ترین عکس صفحه ۳۹ کتاب، این عکس برای کدام سال است؟",
-    options: ["۱۳۶۲", "۱۳۷۹", "۱۳۸۴", "۱۳۹۳"]
-  },
-  {
-    text: "رزمندگان اسلام برای روحیه گرفتن از کدام آهنگ پرطنین استفاده می‌کردند (بر اساس کتاب درسی)؟",
-    options: [
-      "در آن بخش مفهومی به نام حرکت به سوی خدا بود",
-      "در آن آهنگ لغتی به نام هیهات من نذلت",
-      "در آوا مفهومی به نام حرکت به سوی بیت‌المقدس بود",
-      "در آن آوا مفهومی به سوی حرکت به سمت آخرت بود"
-    ]
-  },
-  {
-    text: "چه کسانی توانستند بخش وسیعی از پیشروی‌های نیروی دشمن در جنگ تحمیلی عراق علیه ایران را بگیرند؟",
-    options: ["مردم جوانان داوطلب", "نیروهای مسلح و بسیج", "بسیج و جهاد سازندگی", "هیچ کدام از گزینه‌ها"]
-  },
-  {
-    text: "کدام یک از گزینه‌های زیر درست نیست؟",
-    options: [
-      "مردم به دستور و فرمان حضرت امام خمینی به دفاع از کشور برخاستند",
-      "مردم با رویه بسیجی و انگیزه الهی و تلاش و ایستادگی توانستند بخش وسیعی از پیشروی نیروهای دشمن را مهار کنند",
-      "ایرانیان به جهان غیرت خود را نشان دادند",
-      "حرکت در مسیر رضای خدا جز پندهای دفاع مقدس نیست"
-    ]
-  },
-  {
-    text: "چه تعداد از گزینه‌های زیر اشتباه است؟\n• فروتنی، ساده‌زیستی، توکل به خدا جزو ویژگی‌ها و اصول سبک زندگی شهدا و رزمندگان دوران دفاع مقدس هستند\n• سرزمین نور به مکان‌هایی گفته می‌شود که در آن جنگ دفاع مقدس در جریان بوده\n• شهدا عمدتاً در جنگ بودند و به همین دلیل عمدتاً شهدا کمی در راهیان نور شرکت کردند\n• شعار انقلاب اسلامی استقلال و آزادی است",
-    options: ["۱", "۲", "۳", "۴"]
-  },
-  {
-    text: "کدام یک از موارد زیر از آداب سفر راهیان نور نیست؟",
-    options: [
-      "تصویربرداری هوایی، خاطره‌نگاری، ثبت دلنوشته‌ها",
-      "حضور با وضو در مقبره شهدا و قرائت زیارت‌نامه‌ها",
-      "اجازه از والدین، رعایت حقوق همسفران، مطالعه دفاع مقدس، همکاری با مدیر کاروان و با دوستان، دقت در مسابقات، بازدید از مناطق مربوطه",
-      "اجازه والدین، صدقه دادن"
-    ]
-  },
-  {
-    text: "گزینه زیر آیا درست است؟\n«شهید صدیقه رودباری که در بانه در سال ۱۳۵۹ فوت کرد نمونه بارز از ناجوانمردی بعثی بود»",
-    options: ["درست", "نادرست"]
-  },
-  {
-    text: "کدام گزینه درست نیست؟",
-    options: [
-      "دشمن می‌خواهد دو مؤلفه اسلامیت و ایرانیت را از سبک زندگی اصیل کشور ما پاک کند",
-      "دشمن ما آمریکاست",
-      "عزت ملی و روابط خارجی و مرزبندی با دشمن بسیار مهم است",
-      "به جمهوری اسلامی که ثمره خون پدرتان است تا پای جان وفادار بمانید، سخنی از حضرت امام خمینی است"
-    ]
-  }
-];
-
-// ============================================================
-//  STATE
-// ============================================================
-let studentName = '';
-let studentClass = '';
-let answers = {};
-let timeLeft = EXAM_DURATION_MIN * 60;
-let timerInterval = null;
-let startTime = null;
-let submitted = false;
-
-// ============================================================
-//  LOGIN
-// ============================================================
-document.getElementById('startBtn').onclick = () => {
-  const name = document.getElementById('inpName').value.trim();
-  const cls = document.getElementById('inpClass').value.trim();
-  const msg = document.getElementById('loginMsg');
-  if (!name || !cls) {
-    msg.textContent = 'لطفاً نام و کلاس را وارد کنید';
-    return;
-  }
-  studentName = name;
-  studentClass = cls;
-  document.getElementById('hdrName').textContent = name;
-  document.getElementById('hdrClass').textContent = cls;
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('examScreen').style.display = 'block';
-  renderQuestions();
-  startTimer();
+const TRAZ_DATA = {
+  "اهورا نوروزکوه": 7920,
+  "ماهان زیدعلی": 6960,
+  "حسین کیهانی": 5980,
+  "ابوالفضل نجفیان": 5000,
+  "امیرعلی داودی": 4020,
+  "سامیار روحانی": 3040
 };
 
-// ============================================================
-//  RENDER QUESTIONS
-// ============================================================
-function renderQuestions() {
-  const box = document.getElementById('questionsBox');
-  box.innerHTML = '';
-  QUESTIONS.forEach((q, qi) => {
-    const div = document.createElement('div');
-    div.className = 'question';
+// بخش تراز من
+document.getElementById('checkBtn').onclick = () => {
+  const name = document.getElementById('inpName').value.trim();
+  const box = document.getElementById('resultBox');
+  box.className = 'result-box';
 
-    const num = document.createElement('div');
-    num.className = 'q-num';
-    num.textContent = `سوال ${qi + 1}`;
-    div.appendChild(num);
+  if (!name) {
+    box.classList.add('show', 'error');
+    box.innerHTML = 'لطفاً نام خود را وارد کنید.';
+    return;
+  }
 
-    const txt = document.createElement('div');
-    txt.className = 'q-text';
-    txt.textContent = q.text;
-    div.appendChild(txt);
-
-    q.options.forEach((opt) => {
-      const label = document.createElement('label');
-      label.className = 'option';
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.name = `q${qi}`;
-      radio.value = opt;
-      radio.addEventListener('change', () => {
-        answers[qi] = opt;
-        div.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-        label.classList.add('selected');
-      });
-      const span = document.createElement('span');
-      span.textContent = opt;
-      label.appendChild(radio);
-      label.appendChild(span);
-      div.appendChild(label);
-    });
-
-    box.appendChild(div);
-  });
-}
-
-// ============================================================
-//  TIMER
-// ============================================================
-function startTimer() {
-  startTime = Date.now();
-  updateTimerDisplay();
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay();
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      submitExam(true);
-    }
-  }, 1000);
-}
-
-function updateTimerDisplay() {
-  const m = Math.floor(timeLeft / 60);
-  const s = timeLeft % 60;
-  const el = document.getElementById('timer');
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  if (timeLeft <= 60) el.classList.add('warn');
-}
-
-// ============================================================
-//  SUBMIT
-// ============================================================
-document.getElementById('submitBtn').onclick = () => submitExam(false);
-
-async function submitExam(auto) {
-  if (submitted) return;
-
-  if (!auto) {
-    const unanswered = QUESTIONS.length - Object.keys(answers).length;
-    if (unanswered > 0) {
-      if (!confirm(`${unanswered} سوال بی‌پاسخ مانده است. باز هم ارسال می‌کنید؟`)) return;
-    } else {
-      if (!confirm('آیا از ارسال پاسخ‌ها مطمئن هستید؟')) return;
+  let found = null;
+  for (const key in TRAZ_DATA) {
+    if (key === name || key.includes(name) || name.includes(key)) {
+      found = { name: key, traz: TRAZ_DATA[key] };
+      break;
     }
   }
 
-  submitted = true;
-  clearInterval(timerInterval);
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = 'در حال ارسال...';
-  document.getElementById('examMsg').textContent = '';
-
-  const timeSpentSec = Math.floor((Date.now() - startTime) / 1000);
-  const timeSpent = `${String(Math.floor(timeSpentSec/60)).padStart(2,'0')}:${String(timeSpentSec%60).padStart(2,'0')}`;
-
-  const answerObj = {};
-  QUESTIONS.forEach((q, qi) => {
-    answerObj[`q${qi + 1}`] = answers[qi] || null;
-  });
-
-  const submissionKey = `${studentName}_${studentClass}_${Date.now()}`;
-  const submission = {
-    name: studentName,
-    class: studentClass,
-    answers: answerObj,
-    submittedAt: new Date().toISOString(),
-    timeSpent: timeSpent,
-    autoSubmitted: auto
-  };
-
-  try {
-    const getRes = await fetch(NPOINT_URL + '?t=' + Date.now());
-    let data = await getRes.json();
-    if (!data || typeof data !== 'object') data = {};
-    if (!data.submissions) data.submissions = {};
-    data.submissions[submissionKey] = submission;
-
-    const postRes = await fetch(NPOINT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    if (!postRes.ok) throw new Error('POST failed');
-  } catch (e) {
-    // حتی اگر ارسال موفق نشد، آزمون تمام است
+  if (!found) {
+    box.classList.add('show', 'error');
+    box.innerHTML = `❌ نام «${name}» در لیست پیدا نشد.`;
+    return;
   }
 
-  document.getElementById('examScreen').style.display = 'none';
-  document.getElementById('successScreen').style.display = 'block';
-}
+  box.classList.add('show', 'success');
+  box.innerHTML = `
+    <div class="res-name">${found.name}</div>
+    <div class="res-traz">${found.traz.toLocaleString('fa-IR')}</div>
+    <div class="res-label">تراز شما</div>
+  `;
+};
 
-// ============================================================
-//  ANTI-CHEAT
-// ============================================================
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('selectstart', e => e.preventDefault());
+// بخش گریت AI
+document.getElementById('aiBtn').onclick = () => {
+  const val = parseFloat(document.getElementById('inpTraz').value);
+  const box = document.getElementById('aiResult');
+  box.className = 'ai-result';
+
+  if (isNaN(val)) {
+    box.classList.add('show', 'weak');
+    box.innerHTML = '<div class="ai-msg">لطفاً یک عدد معتبر وارد کنید.</div>';
+    return;
+  }
+
+  let cls, msg;
+  if (val > 7000) {
+    cls = 'excellent';
+    msg = 'نمره امتحان مدرسه شما <b>قطعاً ۲۰</b> خواهد بود. عملکرد شما فوق‌العاده است! 🌟';
+  } else if (val >= 5000) {
+    cls = 'good';
+    msg = 'نمره امتحان مدرسه شما <b>احتمالاً بالای ۱۵</b> خواهد بود. با کمی تلاش بیشتر می‌توانید به ۲۰ برسید. 💪';
+  } else {
+    cls = 'weak';
+    msg = 'نمره امتحان مدرسه شما <b>احتمالاً بالای ۱۰</b> خواهد بود. نیاز به تمرین و مرور بیشتر دارید. 📚';
+  }
+
+  box.classList.add('show', cls);
+  box.innerHTML = `
+    <div class="ai-name">گریت AI</div>
+    <div class="ai-traz">تراز شما: ${val.toLocaleString('fa-IR')}</div>
+    <div class="ai-msg">${msg}</div>
+  `;
+};
 </script>
 </body>
 </html>
