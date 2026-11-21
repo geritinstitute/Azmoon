@@ -3,106 +3,390 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>آزمون | کانون انتشارات گریت</title>
+<title>آزمون آمادگی دفاعی — کانون گریت</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: Tahoma, sans-serif;
-    background: #0f0f1a;
-    color: #fff;
+    font-family: Tahoma, 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     padding: 20px;
+    line-height: 1.9;
+    user-select: none;
+    -webkit-user-select: none;
   }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #1e293b;
+    border-radius: 18px;
+    padding: 28px 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border: 1px solid #334155;
+  }
+  h1 { font-size: 20px; text-align: center; color: #fbbf24; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 24px; }
 
-  body::before {
-    content:'';
-    position:fixed;
-    inset:0;
-    background:
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,.06), transparent 50%),
-      radial-gradient(circle at 70% 70%, rgba(255,255,255,.04), transparent 50%);
-    z-index:-1;
+  #loginScreen { display: block; }
+  #examScreen { display: none; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px; }
+  .field input {
+    width: 100%; padding: 12px; border-radius: 10px;
+    border: 1px solid #475569; background: #0f172a; color: #fff;
+    font-size: 15px; outline: none; font-family: inherit;
   }
+  .field input:focus { border-color: #fbbf24; }
+  .btn {
+    width: 100%; padding: 13px; border: none; border-radius: 10px;
+    background: linear-gradient(145deg, #fbbf24, #d97706);
+    color: #0f172a; font-weight: bold; font-size: 15px;
+    cursor: pointer; font-family: inherit; margin-top: 10px;
+    transition: transform .1s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px); }
+  .msg { text-align: center; color: #f87171; font-size: 13px; min-height: 1.5em; margin-top: 10px; }
 
-  .box {
-    background: #1a1a2e;
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 24px;
-    padding: 60px 40px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,.5);
-    animation: fadeUp .8s ease;
+  .exam-header {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+    padding-bottom: 16px; margin-bottom: 20px;
+    border-bottom: 1px solid #334155;
   }
+  .exam-header .info { font-size: 13px; color: #94a3b8; }
+  .exam-header .info b { color: #fbbf24; }
+  .timer {
+    background: #0f172a; padding: 8px 16px; border-radius: 10px;
+    font-family: 'Courier New', monospace; font-size: 18px;
+    font-weight: bold; color: #6ee7b7; border: 1px solid #334155;
+  }
+  .timer.warn { color: #f87171; border-color: #f87171; animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: .5; } }
 
-  @keyframes fadeUp {
-    from { opacity:0; transform: translateY(30px); }
-    to   { opacity:1; transform: translateY(0); }
+  .question {
+    margin-bottom: 24px; padding-bottom: 20px;
+    border-bottom: 1px dashed #334155;
   }
+  .question:last-of-type { border-bottom: none; }
+  .q-num { color: #fbbf24; font-weight: bold; font-size: 14px; margin-bottom: 6px; }
+  .q-text { font-size: 15px; margin-bottom: 12px; white-space: pre-line; }
+  .option {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 12px; margin-bottom: 8px;
+    background: #0f172a; border: 1px solid #334155;
+    border-radius: 10px; cursor: pointer; transition: all .15s;
+    font-size: 14px;
+  }
+  .option:hover { border-color: #fbbf24; }
+  .option input { margin-top: 4px; accent-color: #fbbf24; cursor: pointer; }
+  .option.selected { background: #422006; border-color: #fbbf24; }
 
-  .icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    display: block;
+  .submit-btn {
+    width: 100%; padding: 15px; border: none; border-radius: 12px;
+    background: linear-gradient(145deg, #10b981, #059669);
+    color: #fff; font-weight: bold; font-size: 16px;
+    cursor: pointer; font-family: inherit; margin-top: 10px;
   }
+  .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
 
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-    font-weight: 800;
+  .success {
+    text-align: center; padding: 40px 20px;
   }
-
-  .info {
-    font-size: 1.2rem;
-    line-height: 2.5;
-    color: #a0a0b8;
-  }
-
-  .info b {
-    color: #fff;
-    font-size: 1.3rem;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-top: 35px;
-    padding: 12px 28px;
-    background: transparent;
-    color: #a0a0b8;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 12px;
-    font-size: .95rem;
-    transition: all .3s ease;
-  }
-
-  .back-link:hover {
-    background: rgba(255,255,255,.05);
-    color: #fff;
-    border-color: rgba(255,255,255,.3);
-    transform: translateY(-2px);
-  }
+  .success .icon { font-size: 60px; margin-bottom: 16px; }
+  .success h2 { color: #6ee7b7; font-size: 22px; margin-bottom: 10px; }
+  .success p { color: #94a3b8; font-size: 14px; }
 </style>
 </head>
 <body>
 
-<div class="box">
-  <span class="icon">📝</span>
-  <h1>آزمون</h1>
-  <div class="info">
-    📅 جمعه ۱۷ مهر ۱۴۰۵<br>
-    🕐 ساعت ۱۷
+<div class="container">
+
+  <!-- ===== LOGIN ===== -->
+  <div id="loginScreen">
+    <h1>📝 آزمون آمادگی دفاعی</h1>
+    <p class="sub">کانون انتشارات گریت — صفحات ۱۹ تا ۴۴</p>
+    <div class="field">
+      <label>نام و نام خانوادگی</label>
+      <input id="inpName" placeholder="مثلاً: علی محمدی" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>کلاس / مدرسه</label>
+      <input id="inpClass" placeholder="مثلاً: نهم الف — دبیرستان شهید بهشتی" autocomplete="off">
+    </div>
+    <button class="btn" id="startBtn">شروع آزمون</button>
+    <div class="msg" id="loginMsg"></div>
   </div>
 
-  <a href="https://geritinstitute.github.io/Gerit-institute-/" class="back-link">
-    ← بازگشت به سایت اصلی
-  </a>
+  <!-- ===== EXAM ===== -->
+  <div id="examScreen">
+    <div class="exam-header">
+      <div class="info">
+        👤 <b id="hdrName"></b><br>
+        <span id="hdrClass"></span>
+      </div>
+      <div class="timer" id="timer">11:00</div>
+    </div>
+    <div id="questionsBox"></div>
+    <button class="submit-btn" id="submitBtn">📤 ارسال پاسخ‌ها</button>
+    <div class="msg" id="examMsg"></div>
+  </div>
+
+  <!-- ===== SUCCESS ===== -->
+  <div id="successScreen" class="success" style="display:none">
+    <div class="icon">✅</div>
+    <h2>پاسخ‌های شما ثبت شد</h2>
+    <p>آزمون به پایان رسید. نتیجه توسط دبیر اعلام می‌شود.</p>
+  </div>
+
 </div>
 
+<script>
+// ============================================================
+//  CONFIG
+// ============================================================
+const NPOINT_URL = 'https://api.npoint.io/4e808f937112b7c22019';
+const EXAM_DURATION_MIN = 11; // دقیقه
+
+// ============================================================
+//  QUESTIONS (بدون پاسخنامه)
+// ============================================================
+const QUESTIONS = [
+  {
+    text: "چه کسی بنیان‌گذار اسلام محمدی است؟",
+    options: ["حضرت محمد", "حضرت آدم", "روح‌الله خمینی", "تحول اسلامی"]
+  },
+  {
+    text: "چند مورد از موارد زیر درست است؟\n• اقتصاد کانون زندگی انسان‌هاست\n• رسیدن به قله پیشرفت با علم و چند فاکتور دیگر ممکن است\n• پنجاه و هفتمین سالگرد انقلاب اسلامی ۲۲ بهمن ۱۴۱۷ است\n• توکل و اعتماد به خدا یکی از آموزه‌های دفاع مقدس است",
+    options: ["۱", "۲", "۳", "۴"]
+  },
+  {
+    text: "چند مورد از موارد زیر درست است؟\n• سبک دفاع مقدس بر اساس روش‌های اسلامی است\n• توکل به خدا هم می‌تواند جز ویژگی‌های افرادی که در عملیات والفجر ۸ وجود دارد باشد و همچنین می‌تواند جز ویژگی‌های کمال کورسل باشد\n• از دهه ۶۰ تاکنون جنگ بزرگی به نام جنگ نرم میان ایران و دشمنان آن راه افتاد",
+    options: ["۱", "۲", "۳", "۴"]
+  },
+  {
+    text: "با توجه به پایین‌ترین عکس صفحه ۳۹ کتاب، این عکس برای کدام سال است؟",
+    options: ["۱۳۶۲", "۱۳۷۹", "۱۳۸۴", "۱۳۹۳"]
+  },
+  {
+    text: "رزمندگان اسلام برای روحیه گرفتن از کدام آهنگ پرطنین استفاده می‌کردند (بر اساس کتاب درسی)؟",
+    options: [
+      "در آن بخش مفهومی به نام حرکت به سوی خدا بود",
+      "در آن آهنگ لغتی به نام هیهات من نذلت",
+      "در آوا مفهومی به نام حرکت به سوی بیت‌المقدس بود",
+      "در آن آوا مفهومی به سوی حرکت به سمت آخرت بود"
+    ]
+  },
+  {
+    text: "چه کسانی توانستند بخش وسیعی از پیشروی‌های نیروی دشمن در جنگ تحمیلی عراق علیه ایران را بگیرند؟",
+    options: ["مردم جوانان داوطلب", "نیروهای مسلح و بسیج", "بسیج و جهاد سازندگی", "هیچ کدام از گزینه‌ها"]
+  },
+  {
+    text: "کدام یک از گزینه‌های زیر درست نیست؟",
+    options: [
+      "مردم به دستور و فرمان حضرت امام خمینی به دفاع از کشور برخاستند",
+      "مردم با رویه بسیجی و انگیزه الهی و تلاش و ایستادگی توانستند بخش وسیعی از پیشروی نیروهای دشمن را مهار کنند",
+      "ایرانیان به جهان غیرت خود را نشان دادند",
+      "حرکت در مسیر رضای خدا جز پندهای دفاع مقدس نیست"
+    ]
+  },
+  {
+    text: "چه تعداد از گزینه‌های زیر اشتباه است؟\n• فروتنی، ساده‌زیستی، توکل به خدا جزو ویژگی‌ها و اصول سبک زندگی شهدا و رزمندگان دوران دفاع مقدس هستند\n• سرزمین نور به مکان‌هایی گفته می‌شود که در آن جنگ دفاع مقدس در جریان بوده\n• شهدا عمدتاً در جنگ بودند و به همین دلیل عمدتاً شهدا کمی در راهیان نور شرکت کردند\n• شعار انقلاب اسلامی استقلال و آزادی است",
+    options: ["۱", "۲", "۳", "۴"]
+  },
+  {
+    text: "کدام یک از موارد زیر از آداب سفر راهیان نور نیست؟",
+    options: [
+      "تصویربرداری هوایی، خاطره‌نگاری، ثبت دلنوشته‌ها",
+      "حضور با وضو در مقبره شهدا و قرائت زیارت‌نامه‌ها",
+      "اجازه از والدین، رعایت حقوق همسفران، مطالعه دفاع مقدس، همکاری با مدیر کاروان و با دوستان، دقت در مسابقات، بازدید از مناطق مربوطه",
+      "اجازه والدین، صدقه دادن"
+    ]
+  },
+  {
+    text: "گزینه زیر آیا درست است؟\n«شهید صدیقه رودباری که در بانه در سال ۱۳۵۹ فوت کرد نمونه بارز از ناجوانمردی بعثی بود»",
+    options: ["درست", "نادرست"]
+  },
+  {
+    text: "کدام گزینه درست نیست؟",
+    options: [
+      "دشمن می‌خواهد دو مؤلفه اسلامیت و ایرانیت را از سبک زندگی اصیل کشور ما پاک کند",
+      "دشمن ما آمریکاست",
+      "عزت ملی و روابط خارجی و مرزبندی با دشمن بسیار مهم است",
+      "به جمهوری اسلامی که ثمره خون پدرتان است تا پای جان وفادار بمانید، سخنی از حضرت امام خمینی است"
+    ]
+  }
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let studentName = '';
+let studentClass = '';
+let answers = {};
+let timeLeft = EXAM_DURATION_MIN * 60;
+let timerInterval = null;
+let startTime = null;
+let submitted = false;
+
+// ============================================================
+//  LOGIN
+// ============================================================
+document.getElementById('startBtn').onclick = () => {
+  const name = document.getElementById('inpName').value.trim();
+  const cls = document.getElementById('inpClass').value.trim();
+  const msg = document.getElementById('loginMsg');
+  if (!name || !cls) {
+    msg.textContent = 'لطفاً نام و کلاس را وارد کنید';
+    return;
+  }
+  studentName = name;
+  studentClass = cls;
+  document.getElementById('hdrName').textContent = name;
+  document.getElementById('hdrClass').textContent = cls;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('examScreen').style.display = 'block';
+  renderQuestions();
+  startTimer();
+};
+
+// ============================================================
+//  RENDER QUESTIONS
+// ============================================================
+function renderQuestions() {
+  const box = document.getElementById('questionsBox');
+  box.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+
+    const num = document.createElement('div');
+    num.className = 'q-num';
+    num.textContent = `سوال ${qi + 1}`;
+    div.appendChild(num);
+
+    const txt = document.createElement('div');
+    txt.className = 'q-text';
+    txt.textContent = q.text;
+    div.appendChild(txt);
+
+    q.options.forEach((opt) => {
+      const label = document.createElement('label');
+      label.className = 'option';
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = `q${qi}`;
+      radio.value = opt;
+      radio.addEventListener('change', () => {
+        answers[qi] = opt;
+        div.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        label.classList.add('selected');
+      });
+      const span = document.createElement('span');
+      span.textContent = opt;
+      label.appendChild(radio);
+      label.appendChild(span);
+      div.appendChild(label);
+    });
+
+    box.appendChild(div);
+  });
+}
+
+// ============================================================
+//  TIMER
+// ============================================================
+function startTimer() {
+  startTime = Date.now();
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      submitExam(true);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if (timeLeft <= 60) el.classList.add('warn');
+}
+
+// ============================================================
+//  SUBMIT
+// ============================================================
+document.getElementById('submitBtn').onclick = () => submitExam(false);
+
+async function submitExam(auto) {
+  if (submitted) return;
+
+  if (!auto) {
+    const unanswered = QUESTIONS.length - Object.keys(answers).length;
+    if (unanswered > 0) {
+      if (!confirm(`${unanswered} سوال بی‌پاسخ مانده است. باز هم ارسال می‌کنید؟`)) return;
+    } else {
+      if (!confirm('آیا از ارسال پاسخ‌ها مطمئن هستید؟')) return;
+    }
+  }
+
+  submitted = true;
+  clearInterval(timerInterval);
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'در حال ارسال...';
+  document.getElementById('examMsg').textContent = '';
+
+  const timeSpentSec = Math.floor((Date.now() - startTime) / 1000);
+  const timeSpent = `${String(Math.floor(timeSpentSec/60)).padStart(2,'0')}:${String(timeSpentSec%60).padStart(2,'0')}`;
+
+  const answerObj = {};
+  QUESTIONS.forEach((q, qi) => {
+    answerObj[`q${qi + 1}`] = answers[qi] || null;
+  });
+
+  const submissionKey = `${studentName}_${studentClass}_${Date.now()}`;
+  const submission = {
+    name: studentName,
+    class: studentClass,
+    answers: answerObj,
+    submittedAt: new Date().toISOString(),
+    timeSpent: timeSpent,
+    autoSubmitted: auto
+  };
+
+  try {
+    const getRes = await fetch(NPOINT_URL + '?t=' + Date.now());
+    let data = await getRes.json();
+    if (!data || typeof data !== 'object') data = {};
+    if (!data.submissions) data.submissions = {};
+    data.submissions[submissionKey] = submission;
+
+    const postRes = await fetch(NPOINT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (!postRes.ok) throw new Error('POST failed');
+  } catch (e) {
+    // حتی اگر ارسال موفق نشد، آزمون تمام است
+  }
+
+  document.getElementById('examScreen').style.display = 'none';
+  document.getElementById('successScreen').style.display = 'block';
+}
+
+// ============================================================
+//  ANTI-CHEAT
+// ============================================================
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
+</script>
 </body>
 </html>
